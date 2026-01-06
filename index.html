@@ -19,6 +19,13 @@ video{
   z-index:-1;
 }
 
+/* OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.6), transparent 50%);
+}
+
 /* HEADER */
 .header{
   position:absolute;
@@ -28,45 +35,45 @@ video{
   gap:10px;
 }
 .avatar{
-  width:40px;height:40px;
+  width:42px;height:42px;
   border-radius:50%;
-  background:#ff4081;
+  background:#ff4d6d;
 }
 .viewer{
   background:rgba(0,0,0,.6);
-  padding:5px 10px;
+  padding:6px 12px;
   border-radius:20px;
-  font-size:12px;
+  font-size:13px;
 }
 
 /* CHAT */
 .chat{
   position:absolute;
-  bottom:90px;
+  bottom:100px;
   left:10px;
-  width:70%;
+  width:75%;
   max-height:40%;
   overflow:hidden;
   font-size:13px;
 }
 .chat p{
-  background:rgba(0,0,0,.5);
-  padding:5px 8px;
+  background:rgba(0,0,0,.55);
+  padding:6px 8px;
   border-radius:8px;
-  margin-bottom:5px;
+  margin-bottom:6px;
 }
 
-/* ACTION BUTTONS */
+/* ACTIONS */
 .actions{
   position:absolute;
   bottom:20px;
-  right:10px;
+  right:12px;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:12px;
 }
 .btn{
-  width:55px;height:55px;
+  width:58px;height:58px;
   border-radius:50%;
   background:#ff0055;
   display:flex;
@@ -80,29 +87,32 @@ video{
 /* LOVE */
 .love{
   position:absolute;
-  bottom:80px;
-  right:20px;
-  font-size:20px;
+  bottom:90px;
+  right:25px;
+  font-size:22px;
   animation:float 3s linear forwards;
 }
 @keyframes float{
   0%{opacity:1;transform:translateY(0)}
-  100%{opacity:0;transform:translateY(-150px)}
+  100%{opacity:0;transform:translateY(-160px)}
 }
 </style>
 </head>
 
 <body>
 
-<!-- VIDEO -->
-<video autoplay muted loop playsinline>
-  <source src="https://cdn.coverr.co/videos/coverr-girl-looking-at-the-city-6827/1080p.mp4" type="video/mp4">
+<!-- VIDEO CEWEK -->
+<video autoplay muted loop playsinline
+poster="https://images.unsplash.com/photo-1544005313-94ddf0286df2">
+  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
 </video>
+
+<div class="overlay"></div>
 
 <!-- HEADER -->
 <div class="header">
   <div class="avatar"></div>
-  <div class="viewer">👁 <span id="viewer">1.245</span></div>
+  <div class="viewer">👁 <span id="viewer">1.328</span></div>
 </div>
 
 <!-- CHAT -->
@@ -115,41 +125,52 @@ video{
 </div>
 
 <script>
-// LINK IKLAN
+// LINK IKLAN (NANTI BOLEH GANTI, SEKARANG BIARKAN DULU)
 function goLink(){
-  window.location.href="https://example.com"; // GANTI LINK IKLAN
+  alert("Terima kasih sudah follow ❤️");
 }
 
 // VIEWER COUNT
-let viewer=1245;
+let viewer=1328;
 setInterval(()=>{
-  viewer+=Math.floor(Math.random()*5);
+  viewer+=Math.floor(Math.random()*6)+1;
   document.getElementById("viewer").innerText=viewer.toLocaleString();
-},2000);
+},1800);
 
 // CHAT DATA
-const names=["Ayu","Rina","Budi","Andi","Salsa","Dewi","Rizky","Fajar"];
-const chats=["🔥 keren","cantik banget","like dong","kok viral","follow ah","auto betah","gokil 😍"];
+const names=["Ayu","Rina","Salsa","Dewi","Nabila","Putri","Intan","Rizky"];
+const chats=[
+  "😍 cantik banget",
+  "kok rame sih",
+  "baru masuk langsung betah",
+  "like dong kak",
+  "auto follow",
+  "live nya enak dilihat",
+  "kok viral",
+  "hadir 🔥"
+];
 
 setInterval(()=>{
   const p=document.createElement("p");
-  p.innerText=names[Math.floor(Math.random()*names.length)]
-   +" : "+chats[Math.floor(Math.random()*chats.length)];
+  p.innerText=
+    names[Math.floor(Math.random()*names.length)]
+    +" : "+
+    chats[Math.floor(Math.random()*chats.length)];
   const chat=document.getElementById("chat");
   chat.appendChild(p);
   if(chat.children.length>6) chat.removeChild(chat.children[0]);
-},1500);
+},1400);
 
 // LOVE
 setInterval(()=>{
   const love=document.createElement("div");
   love.className="love";
   love.innerText="❤️";
-  love.style.right=Math.random()*40+"px";
+  love.style.right=(20+Math.random()*30)+"px";
   document.body.appendChild(love);
   setTimeout(()=>love.remove(),3000);
-},800);
+},700);
 </script>
 
 </body>
-  </html>
+</html>
