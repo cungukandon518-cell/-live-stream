@@ -1,175 +1,104 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIVE Streaming</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream Monetize</title>
+    <style>
+        /* CSS Dasar & Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body, html { height: 100%; overflow: hidden; background: #000; }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{background:#000;color:#fff;overflow:hidden}
+        /* Background Video */
+        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
 
-/* VIDEO BACKGROUND */
-video{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:-1;
-}
+        /* Container Utama */
+        .overlay { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; color: white; }
 
-/* OVERLAY */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.6), transparent 50%);
-}
+        /* Animasi Gift Muncul */
+        .gift-container { position: absolute; top: 40%; left: 20px; z-index: 10; pointer-events: none; }
+        .gift-item { 
+            display: flex; align-items: center; background: rgba(0,0,0,0.6); 
+            padding: 8px 15px; border-radius: 30px; border-left: 4px solid #ffeb3b;
+            margin-bottom: 10px; animation: giftPop 2s forwards; opacity: 0;
+        }
+        @keyframes giftPop {
+            0% { transform: translateX(-50px); opacity: 0; }
+            20% { transform: translateX(0); opacity: 1; }
+            80% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
+        }
 
-/* HEADER */
-.header{
-  position:absolute;
-  top:10px;left:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.avatar{
-  width:42px;height:42px;
-  border-radius:50%;
-  background:#ff4d6d;
-}
-.viewer{
-  background:rgba(0,0,0,.6);
-  padding:6px 12px;
-  border-radius:20px;
-  font-size:13px;
-}
+        /* Comments */
+        .comments-area { max-height: 180px; overflow: hidden; margin-bottom: 15px; }
+        .comment { background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 12px; font-size: 13px; margin-bottom: 5px; width: fit-content; }
+        .user { color: #40c4ff; font-weight: bold; }
 
-/* CHAT */
-.chat{
-  position:absolute;
-  bottom:100px;
-  left:10px;
-  width:75%;
-  max-height:40%;
-  overflow:hidden;
-  font-size:13px;
-}
-.chat p{
-  background:rgba(0,0,0,.55);
-  padding:6px 8px;
-  border-radius:8px;
-  margin-bottom:6px;
-}
+        /* Tombol Utama (Adsterra Target) */
+        .cta-button {
+            display: block; background: linear-gradient(45deg, #ff0050, #ff00a2);
+            color: white; text-align: center; padding: 15px; border-radius: 30px;
+            font-weight: bold; text-decoration: none; font-size: 18px;
+            box-shadow: 0 4px 15px rgba(255,0,80,0.4); animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-/* ACTIONS */
-.actions{
-  position:absolute;
-  bottom:20px;
-  right:12px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-.btn{
-  width:58px;height:58px;
-  border-radius:50%;
-  background:#ff0055;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  text-align:center;
-  cursor:pointer;
-}
-
-/* LOVE */
-.love{
-  position:absolute;
-  bottom:90px;
-  right:25px;
-  font-size:22px;
-  animation:float 3s linear forwards;
-}
-@keyframes float{
-  0%{opacity:1;transform:translateY(0)}
-  100%{opacity:0;transform:translateY(-160px)}
-}
-</style>
+        .footer { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+        .icon-btn { background: rgba(255,255,255,0.2); border: none; padding: 10px; border-radius: 50%; width: 45px; height: 45px; }
+    </style>
 </head>
-
 <body>
 
-<!-- VIDEO CEWEK -->
-<video autoplay muted loop playsinline>
-  <source src="live.mp4" type="video/mp4">
-</video>
+    <video class="video-bg" autoplay muted loop playsinline>
+        <source src="URL_VIDEO_ANDA.mp4" type="video/mp4">
+    </video>
 
-<div class="overlay"></div>
+    <div class="overlay">
+        <div id="giftArea" class="gift-container"></div>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="avatar"></div>
-  <div class="viewer">👁 <span id="viewer">1.328</span></div>
-</div>
+        <div></div>
 
-<!-- CHAT -->
-<div class="chat" id="chat"></div>
+        <div class="content-bottom">
+            <div id="commentBox" class="comments-area"></div>
 
-<!-- BUTTON -->
-<div class="actions">
-  <div class="btn" onclick="goLink()">Follow</div>
-  <div class="btn" onclick="goLink()">Gift</div>
-</div>
+            <a href="URL_DIRECT_LINK_ADSTERRA_ANDA" class="cta-button" onclick="triggerGift()">
+                🎁 KIRIM HADIAH SEKARANG
+            </a>
 
-<script>
-// LINK IKLAN (NANTI BOLEH GANTI, SEKARANG BIARKAN DULU)
-function goLink(){
-  alert("Terima kasih sudah follow ❤️");
-}
+            <div class="footer">
+                <input type="text" placeholder="Tulis komentar..." style="flex-grow: 1; background: rgba(255,255,255,0.2); border: none; padding: 10px 15px; border-radius: 20px; color: white;">
+                <button class="icon-btn" onclick="triggerGift()">❤️</button>
+            </div>
+        </div>
+    </div>
 
-// VIEWER COUNT
-let viewer=1328;
-setInterval(()=>{
-  viewer+=Math.floor(Math.random()*6)+1;
-  document.getElementById("viewer").innerText=viewer.toLocaleString();
-},1800);
+    <script>
+        // Simulasi Komentar Berjalan
+        const users = ["Sultan88", "Rina_Cantik", "Budi_Gaming", "Anisa", "User992"];
+        const texts = ["Mampir kak!", "Gila keren bgt!", "Gift dikirim ya", "Follback dong", "❤️❤️❤️❤️"];
+        const box = document.getElementById('commentBox');
 
-// CHAT DATA
-const names=["Ayu","Rina","Salsa","Dewi","Nabila","Putri","Intan","Rizky"];
-const chats=[
-  "😍 cantik banget",
-  "kok rame sih",
-  "baru masuk langsung betah",
-  "like dong kak",
-  "auto follow",
-  "live nya enak dilihat",
-  "kok viral",
-  "hadir 🔥"
-];
+        setInterval(() => {
+            const div = document.createElement('div');
+            div.className = 'comment';
+            div.innerHTML = `<span class="user">${users[Math.floor(Math.random()*users.length)]}</span>: ${texts[Math.floor(Math.random()*texts.length)]}`;
+            box.appendChild(div);
+            if(box.children.length > 4) box.removeChild(box.children[0]);
+        }, 2500);
 
-setInterval(()=>{
-  const p=document.createElement("p");
-  p.innerText=
-    names[Math.floor(Math.random()*names.length)]
-    +" : "+
-    chats[Math.floor(Math.random()*chats.length)];
-  const chat=document.getElementById("chat");
-  chat.appendChild(p);
-  if(chat.children.length>6) chat.removeChild(chat.children[0]);
-},1400);
+        // Fungsi Animasi Gift
+        function triggerGift() {
+            const giftArea = document.getElementById('giftArea');
+            const gift = document.createElement('div');
+            gift.className = 'gift-item';
+            gift.innerHTML = `🚀 <span style="margin-left:10px"><b>Sultan</b> mengirim Rocket!</span>`;
+            giftArea.appendChild(gift);
+            
+            setTimeout(() => { gift.remove(); }, 2000);
+        }
 
-// LOVE
-setInterval(()=>{
-  const love=document.createElement("div");
-  love.className="love";
-  love.innerText="❤️";
-  love.style.right=(20+Math.random()*30)+"px";
-  document.body.appendChild(love);
-  setTimeout(()=>love.remove(),3000);
-},700);
-</script>
-
+        // Trigger otomatis hadiah sesekali agar terlihat ramai
+        setInterval(triggerGift, 5000);
+    </script>
 </body>
 </html>
