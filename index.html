@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIVE Streaming</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#000;color:#fff;overflow:hidden}
+
+/* VIDEO BACKGROUND */
+video{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-1;
+}
+
+/* HEADER */
+.header{
+  position:absolute;
+  top:10px;left:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.avatar{
+  width:40px;height:40px;
+  border-radius:50%;
+  background:#ff4081;
+}
+.viewer{
+  background:rgba(0,0,0,.6);
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+/* CHAT */
+.chat{
+  position:absolute;
+  bottom:90px;
+  left:10px;
+  width:70%;
+  max-height:40%;
+  overflow:hidden;
+  font-size:13px;
+}
+.chat p{
+  background:rgba(0,0,0,.5);
+  padding:5px 8px;
+  border-radius:8px;
+  margin-bottom:5px;
+}
+
+/* ACTION BUTTONS */
+.actions{
+  position:absolute;
+  bottom:20px;
+  right:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.btn{
+  width:55px;height:55px;
+  border-radius:50%;
+  background:#ff0055;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  text-align:center;
+  cursor:pointer;
+}
+
+/* LOVE */
+.love{
+  position:absolute;
+  bottom:80px;
+  right:20px;
+  font-size:20px;
+  animation:float 3s linear forwards;
+}
+@keyframes float{
+  0%{opacity:1;transform:translateY(0)}
+  100%{opacity:0;transform:translateY(-150px)}
+}
+</style>
+</head>
+
+<body>
+
+<!-- VIDEO -->
+<video autoplay muted loop playsinline>
+  <source src="https://cdn.coverr.co/videos/coverr-girl-looking-at-the-city-6827/1080p.mp4" type="video/mp4">
+</video>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="avatar"></div>
+  <div class="viewer">👁 <span id="viewer">1.245</span></div>
+</div>
+
+<!-- CHAT -->
+<div class="chat" id="chat"></div>
+
+<!-- BUTTON -->
+<div class="actions">
+  <div class="btn" onclick="goLink()">Follow</div>
+  <div class="btn" onclick="goLink()">Gift</div>
+</div>
+
+<script>
+// LINK IKLAN
+function goLink(){
+  window.location.href="https://example.com"; // GANTI LINK IKLAN
+}
+
+// VIEWER COUNT
+let viewer=1245;
+setInterval(()=>{
+  viewer+=Math.floor(Math.random()*5);
+  document.getElementById("viewer").innerText=viewer.toLocaleString();
+},2000);
+
+// CHAT DATA
+const names=["Ayu","Rina","Budi","Andi","Salsa","Dewi","Rizky","Fajar"];
+const chats=["🔥 keren","cantik banget","like dong","kok viral","follow ah","auto betah","gokil 😍"];
+
+setInterval(()=>{
+  const p=document.createElement("p");
+  p.innerText=names[Math.floor(Math.random()*names.length)]
+   +" : "+chats[Math.floor(Math.random()*chats.length)];
+  const chat=document.getElementById("chat");
+  chat.appendChild(p);
+  if(chat.children.length>6) chat.removeChild(chat.children[0]);
+},1500);
+
+// LOVE
+setInterval(()=>{
+  const love=document.createElement("div");
+  love.className="love";
+  love.innerText="❤️";
+  love.style.right=Math.random()*40+"px";
+  document.body.appendChild(love);
+  setTimeout(()=>love.remove(),3000);
+},800);
+</script>
+
+</body>
+  </html>
