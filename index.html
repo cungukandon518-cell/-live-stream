@@ -2,172 +2,167 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Live Stream Premium - Adsterra Monetize</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bigo Live Interface Clone</title>
     <style>
-        /* Dasar & Reset */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        body, html { height: 100%; overflow: hidden; background: #000; color: white; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        
+        body { background-color: #000; display: flex; justify-content: center; }
 
-        /* Background Video Fullscreen */
-        .video-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: #000; /* Warna dasar saat loading */
-        }
-        .video-bg {
-            width: 100%; height: 100%; object-fit: cover;
-            display: block;
-        }
-
-        /* Overlay UI */
-        .ui-overlay {
-            position: relative; height: 100%; display: flex; flex-direction: column;
-            justify-content: space-between; padding: 15px;
-            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.7) 100%);
+        /* Container utama seukuran HP */
+        .bigo-container {
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            position: relative;
+            background: url('images.unsplash.com') center/cover;
+            overflow: hidden;
         }
 
-        /* Header: Profil & Viewer */
-        .header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .profile-card {
-            display: flex; align-items: center; background: rgba(0,0,0,0.5);
-            padding: 5px 12px 5px 5px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2);
+        /* Overlay Gelap agar teks terbaca */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 10%, transparent 40%, rgba(0,0,0,0.6) 90%);
         }
-        .avatar { width: 38px; height: 38px; border-radius: 50%; background: #ff0050; margin-right: 10px; border: 2px solid #fff; }
-        .info-user b { font-size: 13px; display: block; }
-        .info-user span { font-size: 10px; color: #eee; }
-        .live-tag { background: #ff0050; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: bold; margin-left: 10px; }
 
-        /* Stats Viewer */
-        .viewer-box { background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        /* Header: Info Host & Penonton */
+        .header {
+            position: absolute;
+            top: 15px; left: 10px; right: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10;
+        }
 
-        /* Gift Animation Area */
-        #gift-display { position: absolute; top: 35%; left: 15px; z-index: 10; pointer-events: none; }
+        .host-info {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px 12px 5px 5px;
+            border-radius: 25px;
+            display: flex; align-items: center;
+            color: white;
+        }
+
+        .host-avatar {
+            width: 35px; height: 35px;
+            border-radius: 50%; border: 2px solid #ff0;
+            margin-right: 8px;
+        }
+
+        .host-detail p { font-size: 12px; font-weight: bold; }
+        .host-detail span { font-size: 10px; color: #ccc; }
+
+        .viewer-count {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px 12px;
+            border-radius: 15px;
+            color: white; font-size: 12px;
+        }
+
+        /* Area Chat (Scrollable) */
+        .chat-section {
+            position: absolute;
+            bottom: 80px; left: 10px;
+            width: 70%;
+            max-height: 200px;
+            overflow-y: auto;
+            display: flex; flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .chat-msg {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 8px;
+            color: white; font-size: 13px;
+            width: fit-content;
+        }
+
+        .user-name { color: #57e3ff; font-weight: bold; }
+
+        /* Footer: Input & Hadiah */
+        .footer {
+            position: absolute;
+            bottom: 20px; left: 0; width: 100%;
+            padding: 0 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 10;
+        }
+
+        .chat-input {
+            background: rgba(255, 255, 255, 0.2);
+            border: none; border-radius: 20px;
+            padding: 10px 15px; width: 60%;
+            color: white; outline: none;
+        }
+
+        .actions { display: flex; gap: 10px; }
+
+        .btn-icon {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: none;
+        }
+
+        .btn-gift { background: #ffde00; font-size: 20px; }
+        .btn-share { background: rgba(0,0,0,0.5); color: white; font-size: 18px; }
+
+        /* Animasi Gift Kecil */
         .gift-notif {
-            display: flex; align-items: center; background: linear-gradient(90deg, rgba(255,0,80,0.9), rgba(0,0,0,0.3));
-            padding: 6px 20px; border-radius: 30px; margin-bottom: 10px;
-            animation: giftSlide 3s ease-in-out forwards; opacity: 0;
-        }
-        @keyframes giftSlide {
-            0% { transform: translateX(-120%); opacity: 0; }
-            10% { transform: translateX(0); opacity: 1; }
-            90% { transform: translateX(0); opacity: 1; }
-            100% { transform: translateY(-40px); opacity: 0; }
+            position: absolute;
+            bottom: 300px; left: 10px;
+            background: linear-gradient(to right, #f83600, #f9d423);
+            padding: 5px 15px; border-radius: 20px;
+            color: white; font-size: 12px; font-weight: bold;
+            animation: slideIn 0.5s ease-out;
         }
 
-        /* Comments Area */
-        .comments-container {
-            max-height: 180px; overflow: hidden; display: flex; flex-direction: column;
-            gap: 8px; margin-bottom: 20px;
-        }
-        .comment-item {
-            background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 18px;
-            font-size: 13px; width: fit-content; animation: commentFade 0.3s ease;
-        }
-        .user-cmt { color: #ffeb3b; font-weight: bold; margin-right: 6px; }
-        @keyframes commentFade { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-
-        /* Footer & Monetisasi */
-        .footer { display: flex; align-items: center; gap: 12px; }
-        .btn-main {
-            flex-grow: 1; background: linear-gradient(45deg, #ff0050, #ff8000);
-            color: white; text-align: center; padding: 14px; border-radius: 30px;
-            text-decoration: none; font-weight: bold; font-size: 16px;
-            box-shadow: 0 5px 20px rgba(255,0,80,0.5); animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        .icon-btn {
-            width: 50px; height: 50px; background: rgba(255,255,255,0.25);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer;
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <video id="myVideo" class="video-bg" autoplay muted loop playsinline prefetch="auto">
-            <source src="Live-video.mp4" type="video/mp4">
-            Maaf, browser Anda tidak mendukung video.
-        </video>
-    </div>
+    <div class="bigo-container">
+        <div class="overlay"></div>
 
-    <div class="ui-overlay">
+        <!-- Bagian Atas -->
         <div class="header">
-            <div class="profile-card">
-                <div class="avatar"></div>
-                <div class="info-user">
-                    <b>ID: Hot_Streaming_Viral</b>
-                    <span>24.8k Penonton</span>
+            <div class="host-info">
+                <img src="i.pravatar.cc" class="host-avatar" alt="Host">
+                <div class="host-detail">
+                    <p>Host_Cantik_2026</p>
+                    <span>ID: 987654321</span>
                 </div>
-                <div class="live-tag">LIVE</div>
             </div>
-            <div class="viewer-box">👁️ <span id="view-count">2,410</span></div>
+            <div class="viewer-count">👁️ 1.2K</div>
         </div>
 
-        <div id="gift-display"></div>
+        <!-- Notifikasi Hadiah (Simulasi) -->
+        <div class="gift-notif">
+            🎁 Budi mengirim "Supercar" !
+        </div>
 
-        <div class="bottom-ui">
-            <div id="comment-box" class="comments-container">
-                <div class="comment-item"><span class="user-cmt">Riska:</span> Halo kak, salam kenal! ❤️</div>
-                <div class="comment-item"><span class="user-cmt">Sultan_88:</span> Wah rame banget ya.</div>
-            </div>
+        <!-- Area Pesan Chat -->
+        <div class="chat-section">
+            <div class="chat-msg"><span class="user-name">Siska:</span> Halo host!</div>
+            <div class="chat-msg"><span class="user-name">Andi:</span> Request lagu dong kak</div>
+            <div class="chat-msg"><span class="user-name">Maya:</span> Semangat live nya! ❤️</div>
+            <div class="chat-msg"><span class="user-name">Budi:</span> Take my gift! 🔥</div>
+        </div>
 
-            <div class="footer">
-                <a href="URL_DIRECT_LINK_ADSTERRA_ANDA" class="btn-main">
-                    🎁 KIRIM HADIAH SEKARANG
-                </a>
-                <div class="icon-btn" onclick="triggerGift()">❤️</div>
-                <div class="icon-btn">💬</div>
+        <!-- Bagian Bawah -->
+        <div class="footer">
+            <input type="text" class="chat-input" placeholder="Say Hi...">
+            <div class="actions">
+                <button class="btn-icon btn-share">🔗</button>
+                <button class="btn-icon btn-gift">🎁</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // 1. Perbaikan Force Play untuk Mobile (Menghindari Layar Hitam)
-        const video = document.getElementById('myVideo');
-        
-        // Memaksa video putar saat ada interaksi pertama di layar
-        document.body.addEventListener('touchstart', function() {
-            video.play();
-        }, { once: true });
-
-        // Memastikan video tetap mencoba putar saat halaman selesai dimuat
-        window.onload = function() {
-            video.play().catch(function(error) {
-                console.log("Autoplay diblokir, menunggu sentuhan pengguna.");
-            });
-        };
-
-        // 2. Simulasi Penonton
-        let views = 2410;
-        setInterval(() => {
-            views += Math.floor(Math.random() * 15) - 5;
-            document.getElementById('view-count').innerText = views.toLocaleString();
-        }, 4000);
-
-        // 3. Simulasi Komentar Otomatis
-        const users = ["Andi_Pro", "Siska_Imut", "Gamer_Boy", "Lina_Cantik", "User_921", "Bocah_Pintar"];
-        const texts = ["Cantik banget!", "Request dong", "Kirim gift ah..", "Lanjut kak!", "❤️❤️❤️", "Follback ya", "Halo dari Jakarta"];
-        const commentBox = document.getElementById('comment-box');
-
-        setInterval(() => {
-            const div = document.createElement('div');
-            div.className = 'comment-item';
-            div.innerHTML = `<span class="user-cmt">${users[Math.floor(Math.random()*users.length)]}:</span> ${texts[Math.floor(Math.random()*texts.length)]}`;
-            commentBox.appendChild(div);
-            if(commentBox.children.length > 5) commentBox.removeChild(commentBox.children[0]);
-        }, 2500);
-
-        // 4. Simulasi Gift Otomatis
-        const gifts = ["🚀 Rocket!", "🏎️ Mobil Sport", "💎 Berlian", "👑 Mahkota Emas"];
-        function triggerGift() {
-            const display = document.getElementById('gift-display');
-            const notif = document.createElement('div');
-            notif.className = 'gift-notif';
-            notif.innerHTML = `🌟 <b>${users[Math.floor(Math.random()*users.length)]}</b> mengirim ${gifts[Math.floor(Math.random()*gifts.length)]}`;
-            display.appendChild(notif);
-            setTimeout(() => { notif.remove(); }, 3000);
-        }
-        setInterval(triggerGift, 7000);
-    </script>
 </body>
 </html>
