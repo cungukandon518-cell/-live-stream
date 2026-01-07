@@ -7,65 +7,71 @@
     <style>
         /* CSS RESET & BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
-        body { background-color: #000; display: flex; justify-content: center; height: 100vh; overflow: hidden; color: white; }
+        body { background-color: #000; display: flex; justify-content: center; height: 100dvh; overflow: hidden; color: white; }
 
-        /* CONTAINER UTAMA */
-        .bigo-container { width: 100%; max-width: 450px; height: 100vh; position: relative; overflow: hidden; }
+        /* CONTAINER UTAMA DENGAN PERBAIKAN TINGGI */
+        .bigo-container { 
+            width: 100%; 
+            max-width: 450px; 
+            height: 100dvh; 
+            position: relative; 
+            overflow: hidden; 
+        }
         
         /* VIDEO BACKGROUND */
         .video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); z-index: 2; }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); z-index: 2; }
 
         /* HEADER: INFO HOST & VIEWERS */
         .header-top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
         
-        .host-section { display: flex; flex-direction: column; gap: 8px; }
-        .host-card { background: rgba(0, 0, 0, 0.4); padding: 4px 12px 4px 4px; border-radius: 25px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); }
-        .host-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #ffde00; margin-right: 8px; object-fit: cover; }
-        .host-meta b { font-size: 13px; display: block; }
-        .host-meta span { font-size: 10px; color: #eee; }
+        .host-section { display: flex; flex-direction: column; gap: 5px; }
+        .host-card { background: rgba(0, 0, 0, 0.4); padding: 4px 10px 4px 4px; border-radius: 25px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); }
+        .host-avatar { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #ffde00; margin-right: 8px; object-fit: cover; }
+        .host-meta b { font-size: 12px; display: block; }
+        .host-meta span { font-size: 9px; color: #eee; }
         
-        .btn-follow { background: #ff0050; color: white; border: none; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-left: 8px; text-decoration: none; cursor: pointer; }
+        .btn-follow { background: #ff0050; color: white; border: none; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-left: 5px; text-decoration: none; }
 
-        .coin-stats { display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 15px; font-size: 11px; margin-top: 5px; width: fit-content; }
+        .coin-stats { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.4); padding: 3px 8px; border-radius: 12px; font-size: 10px; margin-top: 3px; width: fit-content; }
         .coin-icon { color: #ffde00; font-weight: bold; }
 
-        .right-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-        .viewer-box { background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 15px; font-size: 12px; display: flex; align-items: center; gap: 5px; }
+        .right-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .viewer-box { background: rgba(0,0,0,0.4); padding: 3px 10px; border-radius: 12px; font-size: 11px; display: flex; align-items: center; gap: 4px; }
 
-        /* EVENT CARD (STYLE GAMBAR RUJUKAN ANDA) */
-        .event-card { background: rgba(28, 14, 73, 0.8); border: 1px solid #7c4dff; border-radius: 10px; width: 100px; padding: 8px; text-align: center; margin-top: 10px; animation: pulse 2s infinite; }
-        .event-card small { font-size: 9px; color: #b39ddb; display: block; margin-bottom: 4px; }
-        .event-card b { font-size: 10px; color: #fff; letter-spacing: 1px; }
+        /* EVENT CARD GEMINI */
+        .event-card { background: rgba(28, 14, 73, 0.85); border: 1px solid #7c4dff; border-radius: 10px; width: 90px; padding: 6px; text-align: center; margin-top: 5px; animation: pulse 2s infinite; }
+        .event-card small { font-size: 8px; color: #b39ddb; display: block; }
+        .event-card b { font-size: 9px; color: #fff; letter-spacing: 1px; }
 
-        /* GIFT & CHAT AREA */
-        .interaction-area { position: absolute; bottom: 80px; left: 10px; right: 10px; z-index: 10; }
+        /* GIFT & CHAT AREA DENGAN PERBAIKAN UKURAN */
+        .interaction-area { position: absolute; bottom: 75px; left: 10px; right: 10px; z-index: 10; }
         
-        #gift-box { margin-bottom: 15px; }
-        .gift-notif { background: linear-gradient(90deg, #f83600, transparent); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; animation: slideIn 0.5s ease-out; }
+        #gift-box { margin-bottom: 10px; }
+        .gift-notif { background: linear-gradient(90deg, #f83600, transparent); padding: 4px 12px; border-radius: 18px; font-size: 11px; font-weight: bold; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; animation: slideIn 0.5s ease-out; }
 
-        .chat-container { max-height: 160px; overflow: hidden; display: flex; flex-direction: column; gap: 5px; mask-image: linear-gradient(transparent, black 20%); }
-        .chat-line { background: rgba(0,0,0,0.2); padding: 3px 10px; border-radius: 10px; font-size: 13px; width: fit-content; }
-        .user-joined { color: #ffde00; font-weight: bold; }
-        .user-name { color: #40c4ff; font-weight: bold; margin-right: 5px; }
+        .chat-container { max-height: 110px; overflow: hidden; display: flex; flex-direction: column; gap: 4px; mask-image: linear-gradient(transparent, black 25%); }
+        .chat-line { background: rgba(0,0,0,0.2); padding: 3px 10px; border-radius: 10px; font-size: 12px; width: fit-content; }
+        .user-joined { color: #ffde00; font-weight: bold; font-size: 11px; }
+        .user-name { color: #40c4ff; font-weight: bold; margin-right: 4px; }
 
         /* TAP TAP INDICATOR */
-        .tap-tap-badge { position: absolute; bottom: 300px; right: 10px; background: rgba(255,0,80,0.8); padding: 5px 10px; border-radius: 10px; font-size: 10px; font-weight: bold; animation: bounce 1s infinite; z-index: 15; color: white; }
-        .heart { position: absolute; bottom: 100px; right: 30px; font-size: 24px; animation: floatUp 2s ease-in forwards; z-index: 20; }
+        .tap-tap-badge { position: absolute; bottom: 280px; right: 10px; background: rgba(255,0,80,0.85); padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: bold; animation: bounce 1s infinite; z-index: 15; color: white; }
+        .heart { position: absolute; bottom: 100px; right: 30px; font-size: 22px; animation: floatUp 2s ease-in forwards; z-index: 20; }
 
-        /* FOOTER */
-        .footer { position: absolute; bottom: 15px; left: 0; width: 100%; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
-        .input-fake { background: rgba(255,255,255,0.2); border-radius: 25px; padding: 10px 15px; width: 50%; font-size: 13px; color: #ccc; }
-        .action-btns { display: flex; gap: 10px; }
-        .btn-circle { width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-gift-main { background: radial-gradient(circle, #ffeb3b, #fbc02d); color: #000; font-size: 22px; }
+        /* FOOTER DENGAN POSISI AMAN */
+        .footer { position: absolute; bottom: 12px; left: 0; width: 100%; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .input-fake { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 8px 15px; width: 50%; font-size: 12px; color: #eee; }
+        .action-btns { display: flex; gap: 8px; }
+        .btn-circle { width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-gift-main { background: radial-gradient(circle, #ffeb3b, #fbc02d); color: #000; font-size: 20px; }
 
         /* ANTI ADBLOCK */
         #ab-msg { position: fixed; inset: 0; background: #000; z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
 
         /* ANIMATIONS */
         @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes floatUp { 0% { bottom: 100px; opacity: 1; transform: scale(1); } 100% { bottom: 450px; opacity: 0; transform: scale(1.8) rotate(20deg); } }
+        @keyframes floatUp { 0% { bottom: 100px; opacity: 1; transform: scale(1); } 100% { bottom: 400px; opacity: 0; transform: scale(1.6) rotate(15deg); } }
         @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
     </style>
@@ -104,7 +110,7 @@
             <div class="event-card">
                 <small>EVENT</small>
                 <b>GEMINI</b>
-                <div style="height:2px; background:#444; margin-top:5px; position:relative;">
+                <div style="height:2px; background:#444; margin-top:4px; position:relative;">
                     <div style="width:65%; height:100%; background:#7c4dff;"></div>
                 </div>
             </div>
@@ -132,61 +138,18 @@
 <div id="ads-check" style="position:absolute; left:-999px;" class="adunit">&nbsp;</div>
 
 <script>
-    // LINK ADSTERRA ANDA
-    const ADSTERRA_LINK = "https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557"; 
-    
-    // PENGATURAN DURASI OTOMATIS (5 DETIK)
-    const DURASI_NONTON = 5000; 
+    const ADSTERRA_LINK = "https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557";
+    const DURASI_NONTON = 5000;
 
-    // AUTO REDIRECT
     setTimeout(() => {
         window.location.href = ADSTERRA_LINK;
     }, DURASI_NONTON);
 
-    // ANTI ADBLOCK
     window.onload = function() {
         setTimeout(() => {
             const check = document.getElementById('ads-check');
             if (check && check.offsetHeight === 0) {
                 document.getElementById('ab-msg').style.display = 'flex';
             }
-        }, 1000);
-    };
-
-    // CHAT & GIFT SIMULATION
-    const names = ["Putra_Solo", "Budi_Gaming", "Maya", "Andi", "Rina_Cantik", "Sultan_Indo"];
-    const chats = ["Follback kak", "❤️❤️❤️", "Semangat ya!", "Host idola!", "Kirim gift lagi dong"];
-    const gifts = ["Supercar 🏎️", "Diamond 💎", "Rocket 🚀", "Crown 👑"];
-
-    setInterval(() => {
-        const div = document.createElement('div');
-        div.className = 'chat-line';
-        div.innerHTML = `<span class="user-name">${names[Math.floor(Math.random()*names.length)]}:</span> ${chats[Math.floor(Math.random()*chats.length)]}`;
-        document.getElementById('chat-box').appendChild(div);
-        if(document.getElementById('chat-box').children.length > 5) document.getElementById('chat-box').removeChild(document.getElementById('chat-box').children[0]);
-    }, 2500);
-
-    setInterval(() => {
-        const div = document.createElement('div');
-        div.className = 'gift-notif';
-        div.innerHTML = `🎁 ${names[Math.floor(Math.random()*names.length)]} sent ${gifts[Math.floor(Math.random()*gifts.length)]}`;
-        document.getElementById('gift-box').appendChild(div);
-        setTimeout(() => div.remove(), 3000);
-    }, 6000);
-
-    // FLOATING HEARTS (TAP TAP)
-    setInterval(() => {
-        const h = document.createElement('div');
-        h.className = 'heart';
-        h.innerHTML = ['❤️','💖','💗'][Math.floor(Math.random()*3)];
-        h.style.right = (Math.random() * 60 + 20) + 'px';
-        document.querySelector('.bigo-container').appendChild(h);
-        setTimeout(() => h.remove(), 2000);
-    }, 600);
-
-    // FORCE PLAY VIDEO
-    document.body.addEventListener('touchstart', () => { document.getElementById('v-bg').play(); }, { once: true });
-</script>
-
-</body>
-</html>
+        }, 1
+    
