@@ -3,159 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Live Streaming - Intan</title>
+    <title>Bigo Live - Intan Streaming</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background-color: #000; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
+        /* CSS RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', Arial, sans-serif; }
+        body { background-color: #000; display: flex; justify-content: center; height: 100vh; overflow: hidden; color: white; }
 
-        /* Container Video Background */
+        /* CONTAINER UTAMA */
         .bigo-container { width: 100%; max-width: 450px; height: 100vh; position: relative; overflow: hidden; }
         
-        .video-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: 1;
-        }
+        /* VIDEO BACKGROUND */
+        .video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); z-index: 2; }
 
-        .overlay { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 10%, transparent 40%, rgba(0,0,0,0.6) 90%);
-            z-index: 2;
-        }
-
-        /* Header: Host Info & Follow */
-        .header { position: absolute; top: 15px; left: 10px; right: 10px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        /* HEADER: INFO HOST & VIEWERS */
+        .header-top { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; align-items: flex-start; z-index: 10; }
         
-        .host-wrapper { display: flex; align-items: center; gap: 8px; }
-        .host-info { background: rgba(0, 0, 0, 0.4); padding: 5px 10px; border-radius: 25px; display: flex; align-items: center; color: white; border: 1px solid rgba(255,255,255,0.2); }
-        .host-avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #ff0; margin-right: 8px; }
-        .host-detail p { font-size: 13px; font-weight: bold; }
-        .host-detail span { font-size: 10px; color: #ddd; }
+        .host-section { display: flex; flex-direction: column; gap: 8px; }
+        .host-card { background: rgba(0, 0, 0, 0.4); padding: 4px 12px 4px 4px; border-radius: 25px; display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); }
+        .host-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #ffde00; margin-right: 8px; object-fit: cover; }
+        .host-meta b { font-size: 13px; display: block; }
+        .host-meta span { font-size: 10px; color: #eee; }
         
-        .btn-follow { 
-            background: #ff0050; color: white; border: none; padding: 6px 15px; 
-            border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer;
-            text-decoration: none;
-        }
+        .btn-follow { background: #ff0050; color: white; border: none; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-left: 8px; text-decoration: none; cursor: pointer; }
 
-        .viewer-count { background: rgba(0, 0, 0, 0.4); padding: 5px 12px; border-radius: 15px; color: white; font-size: 12px; }
+        .coin-stats { display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 15px; font-size: 11px; margin-top: 5px; width: fit-content; }
+        .coin-icon { color: #ffde00; font-weight: bold; }
 
-        /* Area Chat Otomatis */
-        .chat-section { position: absolute; bottom: 85px; left: 10px; width: 75%; max-height: 180px; overflow-y: hidden; display: flex; flex-direction: column; gap: 6px; z-index: 10; }
-        .chat-msg { background: rgba(0, 0, 0, 0.3); padding: 4px 10px; border-radius: 12px; color: white; font-size: 13px; width: fit-content; animation: fadeInUp 0.3s ease; }
-        .user-name { color: #57e3ff; font-weight: bold; margin-right: 5px; }
+        .right-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+        .viewer-box { background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 15px; font-size: 12px; display: flex; align-items: center; gap: 5px; }
 
-        /* Notifikasi Anti-Adblock (Hanya muncul jika adblock aktif) */
-        #adblock-notice {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 999; display: none;
-            flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 20px;
-        }
+        /* EVENT CARD (GEMINI STYLE) */
+        .event-card { background: rgba(28, 14, 73, 0.8); border: 1px solid #7c4dff; border-radius: 10px; width: 100px; padding: 8px; text-align: center; margin-top: 10px; animation: pulse 2s infinite; }
+        .event-card small { font-size: 9px; color: #b39ddb; display: block; margin-bottom: 4px; }
+        .event-card b { font-size: 10px; color: #fff; letter-spacing: 1px; }
 
-        /* Heart Animation */
-        .heart {
-            position: absolute; bottom: 100px; right: 20px; font-size: 24px;
-            color: #ff0050; pointer-events: none; z-index: 20;
-            animation: floatUp 2s ease-in forwards;
-        }
+        /* GIFT & CHAT AREA */
+        .interaction-area { position: absolute; bottom: 80px; left: 10px; right: 10px; z-index: 10; }
+        
+        #gift-box { margin-bottom: 15px; }
+        .gift-notif { background: linear-gradient(90deg, #f83600, transparent); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; animation: slideIn 0.5s ease-out; }
 
-        /* Footer */
-        .footer { position: absolute; bottom: 20px; left: 0; width: 100%; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
-        .chat-input { background: rgba(255, 255, 255, 0.2); border: none; border-radius: 20px; padding: 10px 15px; width: 60%; color: white; outline: none; }
-        .btn-gift { background: #ffde00; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; font-size: 22px; text-decoration: none; }
+        .chat-container { max-height: 160px; overflow: hidden; display: flex; flex-direction: column; gap: 5px; mask-image: linear-gradient(transparent, black 20%); }
+        .chat-line { background: rgba(0,0,0,0.2); padding: 3px 10px; border-radius: 10px; font-size: 13px; width: fit-content; }
+        .user-joined { color: #ffde00; font-weight: bold; }
+        .user-name { color: #40c4ff; font-weight: bold; margin-right: 5px; }
 
-        @keyframes fadeInUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes floatUp { 0% { bottom: 100px; opacity: 1; transform: scale(1); } 100% { bottom: 400px; opacity: 0; transform: scale(1.5) translateX(30px); } }
+        /* TAP TAP ANIMATION */
+        .tap-tap-badge { position: absolute; bottom: 300px; right: 10px; background: rgba(255,0,80,0.8); padding: 5px 10px; border-radius: 10px; font-size: 10px; font-weight: bold; animation: bounce 1s infinite; z-index: 15; }
+        .heart { position: absolute; bottom: 100px; right: 30px; font-size: 24px; animation: floatUp 2s ease-in forwards; z-index: 20; }
+
+        /* FOOTER */
+        .footer { position: absolute; bottom: 15px; left: 0; width: 100%; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .input-fake { background: rgba(255,255,255,0.2); border-radius: 25px; padding: 10px 15px; width: 50%; font-size: 13px; color: #ccc; }
+        .action-btns { display: flex; gap: 10px; }
+        .btn-circle { width: 42px; height: 42px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
+        .btn-gift-main { background: radial-gradient(circle, #ffeb3b, #fbc02d); color: #000; font-size: 22px; }
+
+        /* ANTI ADBLOCK */
+        #ab-msg { position: fixed; inset: 0; background: #000; z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+
+        /* ANIMATIONS */
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes floatUp { 0% { bottom: 100px; opacity: 1; transform: scale(1); } 100% { bottom: 450px; opacity: 0; transform: scale(1.8) rotate(20deg); } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
     </style>
 </head>
 <body>
 
-<div id="adblock-notice">
-    <h2>Akses Dibatasi! ⚠️</h2>
-    <p>Matikan AdBlocker Anda untuk menonton siaran langsung Intan.</p>
-    <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; border-radius:20px; border:none; background:#ff0050; color:white; font-weight:bold;">SAYA SUDAH MATIKAN</button>
+<div id="ab-msg">
+    <h2 style="color:#ff0050">⚠️ Akses Terbatas!</h2>
+    <p style="margin: 15px 0">Harap matikan AdBlock Anda untuk menonton siaran Intan.</p>
+    <button onclick="location.reload()" style="background:#ff0050; color:#fff; border:none; padding:10px 25px; border-radius:20px; font-weight:bold;">SAYA SUDAH MATIKAN</button>
 </div>
 
 <div class="bigo-container">
-    <video id="bgVideo" class="video-bg" autoplay muted loop playsinline>
+    <video id="v-bg" class="video-bg" autoplay muted loop playsinline>
         <source src="Live-video.mp4" type="video/mp4">
     </video>
-
     <div class="overlay"></div>
 
-    <div class="header">
-        <div class="host-wrapper">
-            <div class="host-info">
+    <div class="header-top">
+        <div class="host-section">
+            <div class="host-card">
                 <img src="https://randomuser.me/api/portraits/women/44.jpg" class="host-avatar" alt="Intan">
-                <div class="host-detail">
-                    <p>Intan ✨</p>
+                <div class="host-meta">
+                    <b>Intan ✨</b>
                     <span>ID: 2026518</span>
                 </div>
-            </div>
-            <a href="https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557" class="btn-follow">Ikuti</a>
-        </div>
-        <div class="viewer-count">👁️ <span id="view-count">1.2K</span></div>
-    </div>
-
-    <div id="chat-box" class="chat-section">
-        <div class="chat-msg"><span class="user-name">Siska:</span> Halo Intan! ❤️</div>
-    </div>
-
-    <div class="footer">
-        <input type="text" class="chat-input" placeholder="Katakan sesuatu...">
-        <div class="actions">
-            <a href="https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557" class="btn-gift">🎁</a>
-        </div>
-    </div>
-</div>
-
-<div id="ad-tester" class="ad-unit" style="position:absolute; left:-9999px; height:1px; width:1px;">&nbsp;</div>
-
-<script>
-    const ADSTERRA_URL = "https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557"; // Masukkan link Anda di sini
-
-    // 1. AUTO-REDIRECT SETELAH 3 DETIK
-    setTimeout(() => {
-        window.location.href = ADSTERRA_URL;
-    }, 3000);
-
-    // 2. DETEKSI ANTI-ADBLOCK SEDERHANA
-    window.onload = function() {
-        const adTester = document.getElementById('ad-tester');
-        if (adTester.offsetHeight === 0) {
-            document.getElementById('adblock-notice').style.display = 'flex';
-        }
-    };
-
-    // --- Skrip Visual Bigo (Tetap Sama) ---
-    const chatBox = document.getElementById('chat-box');
-    const viewSpan = document.getElementById('view-count');
-    const names = ["Andi", "Sultan_88", "Budi_Gaming", "Rina_Cantik", "User99", "Putra_Solo"];
-    const messages = ["Semangat ya!", "Cantik banget kak", "Request lagu dong", "Malam semua", "Follback kak"];
-
-    setInterval(() => {
-        const name = names[Math.floor(Math.random() * names.length)];
-        const msg = messages[Math.floor(Math.random() * messages.length)];
-        const div = document.createElement('div');
-        div.className = 'chat-msg';
-        div.innerHTML = `<span class="user-name">${name}:</span> ${msg}`;
-        chatBox.appendChild(div);
-        if (chatBox.children.length > 5) chatBox.removeChild(chatBox.children[0]);
-    }, 3000);
-
-    setInterval(() => {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerHTML = '❤️';
-        heart.style.right = (Math.random() * 50 + 20) + 'px';
-        document.querySelector('.bigo-container').appendChild(heart);
-        setTimeout(() => heart.remove(), 2000);
-    }, 800);
-
-    document.body.addEventListener('touchstart', () => {
-        document.getElementById('bgVideo').play();
-    }, { once: true });
-</script>
-
-</body>
-                                                                                     </html>
-    
+                <a href="https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557" class="btn-follow">Ik
+                    
