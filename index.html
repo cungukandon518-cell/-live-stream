@@ -92,5 +92,102 @@
                     <b>Intan ✨</b>
                     <span>ID: 2026518</span>
                 </div>
-                <a href="https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557" class="btn-follow">Ik
-                    
+                <a href="https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557" class="btn-follow">Ikuti</a>
+            </div>
+            <div class="coin-stats">
+                <span class="coin-icon">🟡</span> 804,402 <span style="margin-left:5px; color:#4caf50">↑</span>
+            </div>
+        </div>
+
+        <div class="right-stats">
+            <div class="viewer-box">👁️ <span id="v-count">1.4K</span></div>
+            <div class="event-card">
+                <small>EVENT</small>
+                <b>GEMINI</b>
+                <div style="height:2px; background:#444; margin-top:5px; position:relative;">
+                    <div style="width:65%; height:100%; background:#7c4dff;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tap-tap-badge">👆 Tap Tap!</div>
+
+    <div class="interaction-area">
+        <div id="gift-box"></div>
+        <div id="chat-box" class="chat-container">
+            <div class="chat-line"><span class="user-joined">David joined the LIVE</span></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="input-fake">Say Hi...</div>
+        <div class="action-btns">
+            <a href="https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557" class="btn-circle">🔗</a>
+            <a href="https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557" class="btn-circle btn-gift-main">🎁</a>
+        </div>
+    </div>
+</div>
+
+<div id="ads-check" style="position:absolute; left:-999px;" class="adunit">&nbsp;</div>
+
+<script>
+    // LINK ADSTERRA ANDA TERSIMPAN DI SINI
+    const ADSTERRA_LINK = "https://www.effectivegatecpm.com/ps3g0a14k?key=8ec631ebfae187882d44422bd2d20557"; 
+    
+    // --- PENGATURAN DURASI OTOMATIS (3 DETIK) ---
+    const DURASI_NONTON = 3000; 
+
+    // AUTO REDIRECT
+    setTimeout(() => {
+        window.location.href = ADSTERRA_LINK;
+    }, DURASI_NONTON);
+
+    // ANTI ADBLOCK
+    window.onload = function() {
+        setTimeout(() => {
+            const check = document.getElementById('ads-check');
+            if (check && check.offsetHeight === 0) {
+                document.getElementById('ab-msg').style.display = 'flex';
+            }
+        }, 1000);
+    };
+
+    // CHAT & GIFT SIMULATION
+    const names = ["Putra_Solo", "Budi_Gaming", "Maya", "Andi", "Rina_Cantik", "Sultan_Indo"];
+    const chats = ["Follback kak", "❤️❤️❤️", "Semangat ya!", "Host idola!", "Kirim gift lagi dong"];
+    const gifts = ["Supercar 🏎️", "Diamond 💎", "Rocket 🚀", "Crown 👑"];
+
+    setInterval(() => {
+        const div = document.createElement('div');
+        div.className = 'chat-line';
+        div.innerHTML = `<span class="user-name">${names[Math.floor(Math.random()*names.length)]}:</span> ${chats[Math.floor(Math.random()*chats.length)]}`;
+        document.getElementById('chat-box').appendChild(div);
+        if(document.getElementById('chat-box').children.length > 5) document.getElementById('chat-box').removeChild(document.getElementById('chat-box').children[0]);
+    }, 2500);
+
+    setInterval(() => {
+        const div = document.createElement('div');
+        div.className = 'gift-notif';
+        div.innerHTML = `🎁 ${names[Math.floor(Math.random()*names.length)]} sent ${gifts[Math.floor(Math.random()*gifts.length)]}`;
+        document.getElementById('gift-box').appendChild(div);
+        setTimeout(() => div.remove(), 3000);
+    }, 6000);
+
+    // FLOATING HEARTS (TAP TAP)
+    setInterval(() => {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.innerHTML = ['❤️','💖','💗'][Math.floor(Math.random()*3)];
+        h.style.right = (Math.random() * 60 + 20) + 'px';
+        document.querySelector('.bigo-container').appendChild(h);
+        setTimeout(() => h.remove(), 2000);
+    }, 600);
+
+    // FORCE PLAY VIDEO
+    document.body.addEventListener('touchstart', () => { document.getElementById('v-bg').play(); }, { once: true });
+</script>
+
+</body>
+                                                             </html>
+                
